@@ -2,24 +2,32 @@
 #include <iostream>
 
 
-// Position of the Grid
 const sf::Vector2f POSITION_GRID    { 50.0f , 50.0f };
 const sf::Vector2f SOLVEBUTTONPOS   { 550.0f , 50.0f }; 
 const sf::Vector2f CLEARBUTTONPOS   { 550.0f , 150.0f }; 
+const sf::Vector2f CLEARBUTTONSIZE	{ 200.0f , 50.0f }; 
+const sf::Vector2f GAMESTATEMENU	{ 550.0f , 300.0f }; 
+const sf::Vector2f GAME_STATE_MENU_SIZE	{ 200.0f , 100.0f }; 
 
-Button::Button(const std::string &text,const sf::Vector2f &Position) {
-    font.loadFromFile("font.ttf"); 
-    if (!tex.loadFromFile("button.png")) {
-        std::cerr << "\nCan't load this texture"; 
-    }
-    button.setTexture(&tex); 
+
+
+Button::Button(const std::string &text,const sf::Vector2f &Position, const sf::Vector2f& size, const std::string &type){
+    font.loadFromFile("Resources/font.ttf"); 
+	if (type == "BUTTON") {
+		tex.loadFromFile("Resources/button.png");
+		label.setString(text);
+	}
+	else {
+		tex.loadFromFile("Resources/state.png");
+		label.setString(""); 
+	}
     label.setFont(font); 
     label.setCharacterSize(22);
-    label.setString(text); 
     label.setStyle(sf::Text::Bold);
     label.setFillColor(sf::Color::White); 
-    button.setSize({ 200.0f , 50.0f }); 
-    button.setPosition(Position); 
+    button.setSize(size); 
+    button.setPosition(Position);
+	button.setTexture(&tex); 
     CenterButtonLabel(); 
 }
 
@@ -38,8 +46,15 @@ SudokuGrid::SudokuGrid(const sf::Font& font) {
 		Lines[i] = std::make_shared<sf::RectangleShape>();
 	}
 
-    button = std::make_shared<Button>("Solve", SOLVEBUTTONPOS);
-    ClearButton = std::make_shared<Button>("Clear",CLEARBUTTONPOS);
+	// Loading the game state texture 
+    
+	button = std::make_shared<Button>("Solve", SOLVEBUTTONPOS,CLEARBUTTONSIZE,"BUTTON");
+
+    ClearButton = std::make_shared<Button>("Clear",CLEARBUTTONPOS,CLEARBUTTONSIZE, "BUTTON");
+
+	GameState = std::make_shared<Button>("Can't Solve", GAMESTATEMENU, GAME_STATE_MENU_SIZE,"MENU");
+	GameState->label.setFillColor(sf::Color::Black);
+	
     SelectedCol = 0; 
     SelectedRow = 0; 
 }
@@ -111,10 +126,13 @@ bool SudokuGrid::ButtonClicked(const sf::Vector2i& mousePosition) {
 					}
 				}
 			}
+			GameState->label.setString("SOLVED");
+			GameState->CenterButtonLabel();
 			return true;
 		}
 		else {
-			std::cerr << "\nCan't Solve [INVALID INPUT]\n"; 
+			GameState->label.setString("Can't Solve");
+			GameState->CenterButtonLabel();
 			return false; 
 		}
 
@@ -159,6 +177,7 @@ void SudokuGrid::draw(sf::RenderWindow& window) const {
 	}
 	button->drawButton(window);
 	ClearButton->drawButton(window);
+	GameState->drawButton(window);
 	drawSubgrid(window);
 }
 
@@ -283,6 +302,14 @@ void Button::drawButton(sf::RenderWindow& window)
 	window.draw(label);
 }
 
+sf::Texture Button::settex(sf::Texture& tex, const std::string &path)
+{
+	if (!tex.loadFromFile(path)) {
+		std::cerr << "\nCan't LoadTextur\n";
+	}
+	return tex;
+}
+
 void Button::HoverButton(const sf::Vector2i& MousePosition)
 {
 	if (button.getGlobalBounds().contains(static_cast<sf::Vector2f>(MousePosition))) {
@@ -302,5 +329,6 @@ void SudokuGrid::ClearButtonClicked(const sf::Vector2i& MousePosition)
 				cells[i][j]->setFixed(false);
 			}
 		}
+		GameState->label.setString("");
 	}
 }
