@@ -13,7 +13,6 @@ struct Button {
     Button(const std::string &text ,const sf::Vector2f& Position, const sf::Vector2f& size, const std::string &type);
     void CenterButtonLabel(); 
     void drawButton(sf::RenderWindow& window); 
-    sf::Texture settex(sf::Texture& tex, const std::string& path);
     void HoverButton(const sf::Vector2i &MousePosition); 
 
 };

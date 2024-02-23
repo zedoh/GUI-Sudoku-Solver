@@ -8,3 +8,5 @@
 - `Right click` on the cell to change or give a value.
 - `Right click` + `DEL` to delete a value
 - `ESC` to close the game
+
+

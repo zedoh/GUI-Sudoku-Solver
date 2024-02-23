@@ -302,13 +302,6 @@ void Button::drawButton(sf::RenderWindow& window)
 	window.draw(label);
 }
 
-sf::Texture Button::settex(sf::Texture& tex, const std::string &path)
-{
-	if (!tex.loadFromFile(path)) {
-		std::cerr << "\nCan't LoadTextur\n";
-	}
-	return tex;
-}
 
 void Button::HoverButton(const sf::Vector2i& MousePosition)
 {
