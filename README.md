@@ -20,7 +20,7 @@ https://github.com/zedoh/PRODIGY_SD_04/assets/48362347/8d05a63d-8e5b-40de-9db8-5
 ```mermaid
 classDiagram
     class SudokuGrid {
-        - cells : std::vector<std::vector<std::shared_ptr<Cell>>>
+        - cells : vector<vector<shared_ptr<Cells>>> // 2D array of shared pointers Cells
         - button : Button
         - ClearButton : Button 
         - GameState : Button
