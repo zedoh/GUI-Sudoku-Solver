@@ -8,6 +8,13 @@ https://github.com/zedoh/PRODIGY_SD_04/assets/48362347/8d05a63d-8e5b-40de-9db8-5
 - `Left click` on the cell to give a value.
 - `Left click` + `DEL` to delete a value
 - `ESC` to close the game
+# Datastructures and Algorithms 
+| Data Structure / Algorithm | Description | Example Usage |
+| -------------------------- | ----------- | ------------- |
+| Grid                       | Represents the Sudoku grid as a 2D array of integers. | Storing and manipulating the Sudoku puzzle. |
+| Backtracking Algorithm     | Recursive algorithm used to solve the Sudoku puzzle. | Solving the Sudoku puzzle efficiently. |
+| Button Class               | Represents interactive buttons in the GUI. | Creating buttons for solving and clearing the Sudoku grid. |
+| Cell Class                 | Represents individual cells in the Sudoku grid. | Handling user input and displaying cell values. |
 
 # UML Class Diagram
 ```mermaid
@@ -29,12 +36,12 @@ classDiagram
         + handleKeyboardPressed(keyEvent : sf::Event::KeyEvent , x : int , y:int)
         + ButtonClicked(mousePosition : const sf::Vector2i&) bool
         + ClearButtonClicked(MousePosition : const sf::Vector2i &)
-        + GridValues() std::vector<std::vector<int>>
+        + GridValues() GRID
         + printValues()
-        + CheckRow(grid : std::vector<std::vector<int>>&, row : int) bool
-        + CheckColumn(grid : std::vector<std::vector<int>>&, col : int) bool
-        + CheckSubgrid(grid : std::vector<std::vector<int>>&, startRow : int, startCol : int) bool
-        + CheckGridBeforeSolving(grid : std::vector<std::vector<int>>&) bool
+        + CheckRow(grid : GRID&, row : int) bool
+        + CheckColumn(grid : GRID&, col : int) bool
+        + CheckSubgrid(grid : GRID&, startRow : int, startCol : int) bool
+        + CheckGridBeforeSolving(grid : GRID&) bool
     }
     
     class Cell {
@@ -77,8 +84,8 @@ classDiagram
     }
 
     class Solver {
-        + is_valid(grid : const std::vector<std::vector<int>>&, r : int, k : int) bool
-        + solve(cells : const std::vector<std::vector<int>>&, r : int, c : int)
+        + is_valid(grid : const GRID&, r : int, k : int) bool
+        + solve(cells : const GRID&, r : int, c : int)
     }
 
     SudokuGrid *-- Cell
